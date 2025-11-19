@@ -2,180 +2,96 @@ from sklearn.neighbors import KNeighborsClassifier
 import streamlit as st
 import pandas as pd
 import numpy as np
-
-# ======================
-# ตั้งค่าหน้าเว็บ
-# ======================
-st.set_page_config(page_title="โปรเจคการจำแนกข้อมูลดอกไม้", layout="wide")
-
-# ======================
-# กำหนดให้เนื้อหาเว็บกว้าง 80% และอยู่ตรงกลาง
-# ======================
-st.markdown("""
-<style>
-    .main-container {
-        max-width: 80%;
-        margin-left: auto;
-        margin-right: auto;
-    }
-</style>
-""", unsafe_allow_html=True)
-
-st.markdown('<div class="main-container">', unsafe_allow_html=True)
+import matplotlib.pyplot as plt
 
 
-# ======================
-# แบนเนอร์หัวเรื่อง
-# ======================
-st.markdown("""
-<div style="
-    background: linear-gradient(90deg,#EC7063,#F39C9C);
-    padding:20px;
-    border-radius:12px;
-    border:1px solid #000000;
-    text-align:center;
-">
-  <h1 style="color:white; margin:0;">โปรเจคการจำแนกข้อมูลดอกไม้</h1>
-  <p style="color:white; margin-top:6px;">Machine Learning ด้วยวิธี K-Nearest Neighbors</p>
-</div>
-""", unsafe_allow_html=True)
+st.header("โปรเจคการจำแนกข้อมูลดอกไม้")
+st.image("./img/Nawapath.jpg")
 
-st.markdown("")
-st.image("./img/Nawapath.jpg", width=200, caption="ผู้จัดทำโปรเจค")
-st.markdown("---")
-
-
-# ======================
-# ตัวอย่างรูปดอกไม้ (ตรงกับผลการทำนาย)
-# ======================
-st.subheader("ตัวอย่างดอกไม้แต่ละชนิด")
-
+#st.image("./pic/kairung.jpg")
 col1, col2, col3 = st.columns(3)
+
 with col1:
-    st.markdown("<h4 style='text-align:center;'>Versicolor</h4>", unsafe_allow_html=True)
-    st.image("./img/iris1.jpg", use_column_width=True)
+    st.header("Versicolor")
+    st.image("./img/iris1.jpg")
 
 with col2:
-    st.markdown("<h4 style='text-align:center;'>Virginica</h4>", unsafe_allow_html=True)
-    st.image("./img/iris2.jpg", use_column_width=True)
+    st.header("Verginiga")
+    st.image("./img/iris2.jpg")
 
 with col3:
-    st.markdown("<h4 style='text-align:center;'>Setosa</h4>", unsafe_allow_html=True)
-    st.image("./img/iris3.jpg", use_column_width=True)
-
-st.markdown("---")
+    st.header("Setosa")
+    st.image("./img/iris3.jpg")
 
 
-# ======================
-# สถิติข้อมูลดอกไม้
-# ======================
-st.markdown("""
-<div style="background-color:#EC7063;color:white;padding:12px;
-            border-radius:10px;border:1px solid #000;text-align:center;">
-  <h4 style="margin:4px;">สถิติข้อมูลดอกไม้</h4>
+
+html_7 = """
+<div style="background-color:#EC7063;color:white;padding:15px;border-radius:15px 15px 15px 15px;border-style:'solid';border-color:black">
+<center><h5>สถิติข้อมูลดอกไม้</h5></center>
 </div>
-""", unsafe_allow_html=True)
+"""
+st.markdown(html_7, unsafe_allow_html=True)
 st.markdown("")
 
-# โหลดข้อมูล
+
 dt = pd.read_csv("./data/iris.csv")
-st.write("ตัวอย่างข้อมูล (10 แถวแรก):")
-st.dataframe(dt.head(10))
+st.write(dt.head(10))
 
-# สรุปค่า
-sum_df = pd.DataFrame({
-    "feature": ["petallength","petalwidth","sepallength","sepalwidth"],
-    "sum": [
-        dt['petallength'].sum(),
-        dt['petalwidth'].sum(),
-        dt['sepallength'].sum(),
-        dt['sepalwidth'].sum()
-    ]
-})
-st.table(sum_df)
+dt1 = dt['petallength'].sum()
+dt2 = dt['petalwidth'].sum()
+dt3 = dt['sepallength'].sum()
+dt4 = dt['sepalwidth'].sum()
 
-# ปุ่มแสดงกราฟ
-if st.button("แสดงการจินตทัศน์ข้อมูล (Bar Chart)"):
-    st.bar_chart(sum_df.set_index('feature'))
+dx = [dt1, dt2, dt3, dt4]
+dx2 = pd.DataFrame(dx, index=["d1", "d2", "d3", "d4"])
+
+if st.button("แสดงการจินตทัศน์ข้อมูล"):
+    #st.write(dt.head(10))
+    st.bar_chart(dx2)
+    st.button("ไม่แสดงข้อมูล")
 else:
-    st.write("ยังไม่แสดงกราฟ")
-
-st.markdown("---")
+    st.write("ไม่แสดงข้อมูล")
 
 
-# ======================
-# ทำนายข้อมูลดอกไม้
-# ======================
-st.markdown("""
-<div style="background-color:#6BD5DA;padding:12px;border-radius:10px;
-            border:1px solid #000;text-align:center;">
-  <h4 style="margin:4px;">ทำนายข้อมูลดอกไม้</h4>
+html_8 = """
+<div style="background-color:#6BD5DA;padding:15px;border-radius:15px 15px 15px 15px;border-style:'solid';border-color:black">
+<center><h5>ทำนายข้อมูล</h5></center>
 </div>
-""", unsafe_allow_html=True)
+"""
+st.markdown(html_8, unsafe_allow_html=True)
 st.markdown("")
 
-# เอาค่า min/max จาก dataset
-pt_len_min, pt_len_max = float(dt['petallength'].min()), float(dt['petallength'].max())
-pt_wd_min, pt_wd_max  = float(dt['petalwidth'].min()),  float(dt['petalwidth'].max())
-sp_len_min, sp_len_max = float(dt['sepallength'].min()), float(dt['sepallength'].max())
-sp_wd_min, sp_wd_max  = float(dt['sepalwidth'].min()),  float(dt['sepalwidth'].max())
+pt_len = st.slider("กรุณาเลือกข้อมูล petallength")
+pt_wd = st.slider("กรุณาเลือกข้อมูล petalwidth")
 
-# คอลัมน์รับค่า
-colA, colB = st.columns(2)
-
-with colA:
-    st.markdown("**ข้อมูลกลีบดอก (Petal)**")
-    petal_length = st.slider("petallength", min_value=pt_len_min, max_value=pt_len_max,
-                             value=(pt_len_min + pt_len_max)/2, step=0.1)
-    petal_width = st.slider("petalwidth", min_value=pt_wd_min, max_value=pt_wd_max,
-                            value=(pt_wd_min + pt_wd_max)/2, step=0.1)
-
-with colB:
-    st.markdown("**ข้อมูลกลีบเลี้ยง (Sepal)**")
-    sepal_length = st.number_input("sepallength", min_value=sp_len_min, max_value=sp_len_max,
-                                   value=(sp_len_min + sp_len_max)/2, step=0.1)
-    sepal_width = st.number_input("sepalwidth", min_value=sp_wd_min, max_value=sp_wd_max,
-                                  value=(sp_wd_min + sp_wd_max)/2, step=0.1)
-
-st.markdown("")
+sp_len = st.number_input("กรุณาเลือกข้อมูล sepallength")
+sp_wd = st.number_input("กรุณาเลือกข้อมูล sepalwidth")
 
 
-# ======================
-# ปุ่มทำนาย
-# ======================
-if st.button("🔍 ทำนายผล"):
+if st.button("ทำนายผล"):
+    #st.write("ทำนาย")
+    dt = pd.read_csv("./data/iris.csv") 
     X = dt.drop('variety', axis=1)
-    y = dt['variety']
+    y = dt.variety   
+    Knn_model = KNeighborsClassifier(n_neighbors=3)
+    Knn_model.fit(X, y)   
 
-    model = KNeighborsClassifier(n_neighbors=3)
-    model.fit(X, y)
+    x_input = np.array([[pt_len, pt_wd, sp_len, sp_wd]]) #ข้อมูลใหม่
 
-    # จัดลำดับ input ตามคอลัมน์ใน CSV
-    inputs = {
-        'petallength': petal_length,
-        'petalwidth': petal_width,
-        'sepallength': sepal_length,
-        'sepalwidth': sepal_width
-    }
-    ordered_input = [inputs[col] for col in X.columns]
-    x_input = np.array([ordered_input])
+    st.write(Knn_model.predict(x_input))
+    out=Knn_model.predict(x_input)
 
-    prediction = model.predict(x_input)[0]
-    st.success(f"ผลการทำนาย: {prediction}")
-
-    # แสดงภาพตามผลทำนาย
-    pred = prediction.lower()
-
-    if "versicolor" in pred:
-        st.image("./img/iris1.jpg", caption="Versicolor")
-    elif "virgin" in pred:   # รองรับ Virginica / Verginiga
-        st.image("./img/iris2.jpg", caption="Virginica")
-    elif "setosa" in pred:
-        st.image("./img/iris3.jpg", caption="Setosa")
+    if out[0] == 'Setosa':
+        st.image("./img/iris1.jpg")
+    elif out[0] == 'Versicolor':       
+        st.image("./img/iris2.jpg")
     else:
-        st.warning("ไม่พบภาพตัวอย่างของสายพันธุ์นี้")
-
+        st.image("./img/iris3.jpg")
 else:
-    st.info("กรอกข้อมูลด้านบน แล้วกดปุ่ม 'ทำนายผล'")
+    st.write("ไม่ทำนาย")
 
-st.markdown('</div>', unsafe_allow_html=True)
+
+    
+
+
+
