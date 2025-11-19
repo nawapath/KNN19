@@ -6,4 +6,4 @@ import matplotlib.pyplot as plt
 
 
 st.header("Nawapath")
-st.img("./img/Nawapath.jpg")
+st.image("./img/Nawapath.jpg")
