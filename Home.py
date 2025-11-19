@@ -8,6 +8,9 @@ import matplotlib.pyplot as plt
 st.header("Nawapath")
 st.image("./img/Nawapath.jpg")
 
+#st.image("./pic/kairung.jpg")
+col1, col2, col3 = st.columns(3)
+
 with col1:
     st.header("Versicolor")
     st.image("./img/iris1.jpg")
