@@ -5,7 +5,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 
-st.header("<center>โปรเจคการจำแนกข้อมูลดอกไม้</center>")
+st.header("โปรเจคการจำแนกข้อมูลดอกไม้")
 st.image("./img/Nawapath.jpg")
 
 #st.image("./pic/kairung.jpg")
@@ -32,3 +32,15 @@ html_7 = """
 """
 st.markdown(html_7, unsafe_allow_html=True)
 st.markdown("")
+
+
+dt = pd.read_csv("./data/iris.csv")
+st.write(dt.head(10))
+
+dt1 = dt['petal.length'].sum()
+dt2 = dt['petal.width'].sum()
+dt3 = dt['sepal.length'].sum()
+dt4 = dt['sepal.width'].sum()
+
+dx = [dt1, dt2, dt3, dt4]
+dx2 = pd.DataFrame(dx, index=["d1", "d2", "d3", "d4"])
