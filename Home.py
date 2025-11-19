@@ -26,7 +26,7 @@ with col3:
 
 
 html_7 = """
-<div style="background-color:#EC7063;text-white;padding:15px;border-radius:15px 15px 15px 15px;border-style:'solid';border-color:black">
+<div style="background-color:#EC7063;color:white;padding:15px;border-radius:15px 15px 15px 15px;border-style:'solid';border-color:black">
 <center><h5>สถิติข้อมูลดอกไม้</h5></center>
 </div>
 """
@@ -60,3 +60,10 @@ html_8 = """
 """
 st.markdown(html_8, unsafe_allow_html=True)
 st.markdown("")
+
+pt_len = st.slider("กรุณาเลือกข้อมูล petal.length")
+pt_wd = st.slider("กรุณาเลือกข้อมูล petal.width")
+
+sp_len = st.number_input("กรุณาเลือกข้อมูล sepal.length")
+sp_wd = st.number_input("กรุณาเลือกข้อมูล sepal.width")
+
