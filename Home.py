@@ -5,7 +5,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 
-st.header("โปรเจคการจำแนกข้อมูลดอกไม้")
+st.header("<center>โปรเจคการจำแนกข้อมูลดอกไม้</center>")
 st.image("./img/Nawapath.jpg")
 
 #st.image("./pic/kairung.jpg")
