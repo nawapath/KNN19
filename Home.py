@@ -7,3 +7,15 @@ import matplotlib.pyplot as plt
 
 st.header("Nawapath")
 st.image("./img/Nawapath.jpg")
+
+with col1:
+    st.header("Versicolor")
+    st.image("./img/iris1.jpg")
+
+with col2:
+    st.header("Verginiga")
+    st.image("./img/iris2.jpg")
+
+with col3:
+    st.header("Setosa")
+    st.image("./img/iris3.jpg")
